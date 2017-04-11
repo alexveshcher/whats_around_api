@@ -137,6 +137,59 @@ class TestsController < ApplicationController
     render json: places
   end
 
+  def find_by_category
+    p_latitude = params[:lat]
+    p_longitude = params[:lng]
+    p_radius = params[:radius]
+    p_category = params[:category]
+
+    categoryId = 'no_category'
+    if(p_category == "historic") #Historic Site
+      categoryId = '4deefb944765f83613cdba6e'
+    end
+
+    url = 'https://api.foursquare.com/v2/venues/explore'\
+    "?ll=#{p_latitude},#{p_longitude}"\
+    '&client_id=NU54NGRVGGQQ2BDSTBGWVQ3LLP44USMS3AP4A1IBQXYFG5RD'\
+    '&client_secret=SD3LOHWHYN04KDUU0CB1HPNASPXTKAKB10QJQZTJ1PMDYWST'\
+    '&v=20170405'\
+    "&radius=#{p_radius}"\
+    "&categoryId=#{categoryId}"
+    puts url
+    response = Net::HTTP.get_response(URI.parse(url))
+
+
+
+    obj = JSON.parse(response.body)
+    venues = []
+    obj['response']['groups'].first['items'].each do |i|
+      venues << i['venue']
+    end
+    # venues = obj['response']['venues']
+
+    places = []
+    venues.each do |v|
+      id = v['id']
+      name = v['name']
+      address = v['location']['address']
+      lat = v['location']['lat']
+      lng = v['location']['lng']
+      distance = v['location']['distance']
+      categories = v['categories']
+
+      categs = []
+       categories.each do |c|
+        categs << Category.new(c['id'], c['name'])
+      end
+      new_place = Place.new(id, name, address, lat, lng, distance, categs)
+      # puts new_place.inspect
+      places << new_place
+    end
+
+    # render JSON.pretty_generate(some_data)
+    render json: places
+  end
+
 end
 
 class Place
