@@ -75,11 +75,11 @@ test:
 #
 # You can use this database configuration with:
 #
-#   production:
-#     url: <%= ENV['DATABASE_URL'] %>
+  production:
+    url: <%= ENV['DATABASE_URL'] %>
 #
-production:
-  <<: *default
-  database: whats_around_api_production
-  username: whats_around_api
-  password: <%= ENV['WHATS_AROUND_API_DATABASE_PASSWORD'] %>
+# production:
+#   <<: *default
+#   database: whats_around_api_production
+#   username: whats_around_api
+#   password: <%= ENV['WHATS_AROUND_API_DATABASE_PASSWORD'] %>
