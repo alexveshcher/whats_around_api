@@ -11,7 +11,7 @@ class TestsController < ApplicationController
     # params[:lat, :lng]
     response = Net::HTTP.get_response(URI.parse("https://api.foursquare.com/v2/venues/search?ll=#{latitude},#{longitude}&client_id=NU54NGRVGGQQ2BDSTBGWVQ3LLP44USMS3AP4A1IBQXYFG5RD&client_secret=SD3LOHWHYN04KDUU0CB1HPNASPXTKAKB10QJQZTJ1PMDYWST&v=20170405&radius=1200"))
     puts "LINK: https://api.foursquare.com/v2/venues/search?ll=#{latitude},#{longitude}&client_id=NU54NGRVGGQQ2BDSTBGWVQ3LLP44USMS3AP4A1IBQXYFG5RD&client_secret=SD3LOHWHYN04KDUU0CB1HPNASPXTKAKB10QJQZTJ1PMDYWST&v=20170405&radius=1200"
-    puts response.body
+    # puts response.body
     # json = File.read('foursquare.json')
     obj = JSON.parse(response.body)
     venues = obj['response']['venues']
