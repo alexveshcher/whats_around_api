@@ -88,6 +88,55 @@ class TestsController < ApplicationController
     render json: places
 
   end
+
+  def random
+    # params.permit(:lat, :lng, :categories)
+    p_latitude = params[:lat]
+    p_longitude = params[:lng]
+    p_radius = params[:radius]
+
+
+    url = 'https://api.foursquare.com/v2/venues/explore'\
+    "?ll=#{p_latitude},#{p_longitude}"\
+    '&client_id=NU54NGRVGGQQ2BDSTBGWVQ3LLP44USMS3AP4A1IBQXYFG5RD'\
+    '&client_secret=SD3LOHWHYN04KDUU0CB1HPNASPXTKAKB10QJQZTJ1PMDYWST'\
+    '&v=20170405'\
+    "&radius=#{p_radius}"\
+    "&section=topPicks"
+    puts url
+    response = Net::HTTP.get_response(URI.parse(url))
+
+
+
+    obj = JSON.parse(response.body)
+    venues = []
+    obj['response']['groups'].first['items'].each do |i|
+      venues << i['venue']
+    end
+    # venues = obj['response']['venues']
+
+    places = []
+    v =  venues.sample
+
+    id = v['id']
+    name = v['name']
+    address = v['location']['address']
+    lat = v['location']['lat']
+    lng = v['location']['lng']
+    distance = v['location']['distance']
+    categories = v['categories']
+
+    categs = []
+    categories.each do |c|
+        categs << Category.new(c['id'], c['name'])
+    end
+    new_place = Place.new(id, name, address, lat, lng, distance, categs)
+    places << new_place
+
+    # render JSON.pretty_generate(some_data)
+    render json: places
+  end
+
 end
 
 class Place
