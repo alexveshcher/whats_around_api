@@ -25,8 +25,12 @@ gem 'puma', '~> 3.0'
 # gem 'rack-cors'
 gem 'mini_portile2'
 
+group :production do
+  gem 'rails_12factor'
+  gem 'pg'
+end
+
 group :development, :test do
-  gem 'sqlite3'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
 end
