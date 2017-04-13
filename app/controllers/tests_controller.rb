@@ -78,12 +78,13 @@ class TestsController < ApplicationController
       photo_url_prefix = v['photos']['groups'].first['items'].first['prefix']
       photo_url_suffix = v['photos']['groups'].first['items'].first['suffix']
       photo_url = "#{photo_url_prefix}300x300#{photo_url_suffix}"
+      rating = v['rating']
 
       categs = []
        categories.each do |c|
         categs << Category.new(c['id'], c['name'])
       end
-      new_place = Place.new(id, name, address, lat, lng, distance, categs, photo_url)
+      new_place = Place.new(id, name, address, lat, lng, distance, categs, photo_url, rating)
       # puts new_place.inspect
       places << new_place
     end
@@ -133,12 +134,13 @@ class TestsController < ApplicationController
     photo_url_prefix = v['photos']['groups'].first['items'].first['prefix']
     photo_url_suffix = v['photos']['groups'].first['items'].first['suffix']
     photo_url = "#{photo_url_prefix}300x300#{photo_url_suffix}"
+    rating = v['rating']
 
     categs = []
     categories.each do |c|
         categs << Category.new(c['id'], c['name'])
     end
-    new_place = Place.new(id, name, address, lat, lng, distance, categs, photo_url)
+    new_place = Place.new(id, name, address, lat, lng, distance, categs, photo_url, rating)
     places << new_place
 
     # render JSON.pretty_generate(some_data)
@@ -188,12 +190,14 @@ class TestsController < ApplicationController
       photo_url_prefix = v['photos']['groups'].first['items'].first['prefix']
       photo_url_suffix = v['photos']['groups'].first['items'].first['suffix']
       photo_url = "#{photo_url_prefix}300x300#{photo_url_suffix}"
+      rating = v['rating']
+
 
       categs = []
        categories.each do |c|
         categs << Category.new(c['id'], c['name'])
       end
-      new_place = Place.new(id, name, address, lat, lng, distance, categs, photo_url)
+      new_place = Place.new(id, name, address, lat, lng, distance, categs, photo_url, rating)
       # puts new_place.inspect
       places << new_place
     end
@@ -205,9 +209,9 @@ class TestsController < ApplicationController
 end
 
 class Place
-  attr_accessor :id, :name, :address, :lat, :lng, :distance, :categories, :photo_url
+  attr_accessor :id, :name, :address, :lat, :lng, :distance, :categories, :photo_url, :rating
 
-  def initialize(id, name, address, lat, lng, distance, categories, photo_url)
+  def initialize(id, name, address, lat, lng, distance, categories, photo_url, rating)
     @id = id
     @name = name
     @address = address
@@ -216,6 +220,7 @@ class Place
     @distance = distance
     @categories = categories
     @photo_url = photo_url
+    @rating = rating
   end
 end
 
